@@ -72,7 +72,11 @@ server.put('/api/users/:id', (request, response) => {
   if(userData.name && userData.bio) {
     Users.update(id, userData)
       .then(user => {
-        response.status(201).json(userData);
+        if(user !== 0) {
+          response.status(201).json(userData);
+        } else {
+          response.status(400).send({ errorMessage: "The user with the specified ID does not exist."})
+        }
       })
       .catch(error => {
         console.log(error)
